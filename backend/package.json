@@ -1,0 +1,35 @@
+{
+  "name": "full-stack-open-4",
+  "version": "1.0.0",
+  "description": "Blog app backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DominikKralj909/full-stack-open-4.git"
+  },
+  "author": "Dominik Kralj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DominikKralj909/full-stack-open-4/issues"
+  },
+  "homepage": "https://github.com/DominikKralj909/full-stack-open-4#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.12.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  }
+}
