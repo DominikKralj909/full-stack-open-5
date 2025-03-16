@@ -4,6 +4,7 @@ import Blog from './components/Blog';
 import Login from './components/Login';
 import AddBlog from './components/AddBlog';
 import Notification from './components/Notification';
+import Toggleable from './components/Toggleble';
 
 import blogService from './services/blogs';
 
@@ -11,15 +12,18 @@ const App = () => {
 	const [blogs, setBlogs] = useState([]);
 	const [user, setUser] = useState(null);
 	const [notification, setNotification] = useState(null);
+	const [visible, setVisible] = useState(false);
 
 	const fetchBlogs = async () => {
 		try {
 			const response = await blogService.getAll();
-			setBlogs(response);
-		} catch(error) {
+			const sortedBlogs = response.sort((a, b) => b.likes - a.likes);
+			setBlogs(sortedBlogs);
+		} catch (error) {
 			console.error('Failed to fetch blogs:', error.response?.data?.error || error.message);
 		}
-	}
+	};
+
 
 	useEffect(() => {
 		fetchBlogs();
@@ -54,13 +58,21 @@ const App = () => {
 						<span>{user.username} logged in</span>
 						<button onClick={() => setUser(null)}>Logout</button>
 					</div>
-					<AddBlog 
-						setBlogs={setBlogs} 
-						showNotification={showNotification}
-						fetchBlogs={fetchBlogs} 
-					/>
+					<button onClick={() => setVisible(true)}>New note</button>
 					<br />
-					{blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+					<Toggleable 
+						visible={visible}
+						setVisible={setVisible}
+					>
+						<AddBlog 
+							setBlogs={setBlogs} s
+							showNotification={showNotification}
+							fetchBlogs={fetchBlogs}
+							setVisible={setVisible} 
+						/>
+					</Toggleable>
+					<br />
+					{blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />)}
 				</>
 			)}
 		</div>

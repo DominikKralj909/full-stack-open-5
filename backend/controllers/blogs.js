@@ -29,18 +29,16 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
         return response.status(400).json({ error: 'Title and URL are required' });
     }
 
-    // Create new blog with correct user
     const blog = new Blog({
         title,
         author,
         url,
         likes: likes || 0,
-        user: user._id, // Associate with the logged-in user
+        user: user._id,
     });
 
     const savedBlog = await blog.save();
 
-    // Add blog to the user's blogs array
     user.blogs = user.blogs.concat(savedBlog._id);
     await user.save();
 
@@ -66,28 +64,25 @@ blogsRouter.delete('/:id', async (request, response) => {
 });
 
 blogsRouter.put('/:id', async (request, response) => {
-	const { id } = request.params;
-	const { likes } = request.body;
+    const { id } = request.params;
+    const { title, author, url, likes, user } = request.body;
 
+    try {
+        const updatedBlog = await Blog.findByIdAndUpdate(
+            id,
+            { title, author, url, likes, user },
+            { new: true, runValidators: true }
+        ).populate('user', { username: 1, name: 1 });
 
-	try {
-		const blogToUpdate = await Blog.findById(id);
+        if (!updatedBlog) {
+            return response.status(404).json({ error: 'Blog not found' });
+        }
 
-		if (!blogToUpdate) {
-			return response.status(404).json({ error: 'Blog not found' });
-		}
-
-		if (likes !== undefined) {
-			blogToUpdate.likes = likes;
-		}
-
-		const updatedBlog = await blogToUpdate.save();
-
-		response.json(updatedBlog);
-
-	} catch (error) {
-		response.status(500).json({ error: 'Something went wrong' });
-	}
+        response.json(updatedBlog);
+    } catch (error) {
+        console.error('Error updating blog:', error);
+        response.status(400).json({ error: 'Invalid data or ID format' });
+    }
 });
 
 

@@ -28,4 +28,17 @@ const addBlog = async (blog) => {
     return response.data;
 };
 
-export default { getAll, login, addBlog, setToken };
+const updateBlog = async (id, updatedBlog) => {
+    const response = await axios.put(`${baseUrl}/${id}`, updatedBlog);
+    return response.data;
+};
+
+const deleteBlog = async (id) => {
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    };
+
+    await axios.delete(`/api/blogs/${id}`, config);
+};
+
+export default { getAll, login, addBlog, setToken, updateBlog, deleteBlog };

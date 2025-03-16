@@ -2,24 +2,25 @@ import { useState } from 'react';
 
 import blogService from '../services/blogs';
 
-function AddBlog({ setBlogs, showNotification, fetchBlogs }) {
-	const [title, setTitle] = useState('');
-	const [author, setAuthor] = useState('');
-	const [url, setUrl] = useState('');
-
+function AddBlog({ setBlogs, showNotification, fetchBlogs, setVisible }) {
+	const [blog, setBlog] = useState({
+		title: '',
+		author: '',
+		url: '',
+	});
+ 
 	const handleAddBlog = async (event) => {
 		event.preventDefault();
 
 		try {
-			const returnedBlog = await blogService.addBlog({ title, author, url });
+			const returnedBlog = await blogService.addBlog({ title: blog.title, author: blog.author, url: blog.url });
 
-			showNotification(`Blog "${title}" added successfully!`, 'success');
+			showNotification(`Blog "${blog.title}" added successfully!`, 'success');
 			setBlogs((prevBlogs) => prevBlogs.concat(returnedBlog));
 
 			fetchBlogs();
-			setTitle('');
-			setAuthor('');
-			setUrl('');
+			setBlog({ title: '', author: '', url: '' });
+			setVisible(false); 
 		} catch (error) {
 			console.error('Failed to add a blog:', error.response?.data?.error || error.message);
 			showNotification(`Error adding blog: ${error.response?.data?.error || error.message}`, 'error');
@@ -36,8 +37,8 @@ function AddBlog({ setBlogs, showNotification, fetchBlogs }) {
 					<input 
 						type="text" 
 						name="title"
-						value={title}
-						onChange={(event) => setTitle(event.target.value)} 
+						value={blog.title}
+						onChange={(event) => setBlog((prevBlog) => ({ ...prevBlog, title: event.target.value }))} 
 					/>
 				</div>
 				<div>
@@ -45,8 +46,8 @@ function AddBlog({ setBlogs, showNotification, fetchBlogs }) {
 					<input 
 						type="text" 
 						name="author"
-						value={author}
-						onChange={(event) => setAuthor(event.target.value)} 
+						value={blog.author}
+						onChange={(event) => setBlog((prevBlog) => ({ ...prevBlog, author: event.target.value }))} 
 					/>
 				</div>
 				<div>
@@ -54,11 +55,12 @@ function AddBlog({ setBlogs, showNotification, fetchBlogs }) {
 					<input 
 						type="text" 
 						name="url"
-						value={url}
-						onChange={(event) => setUrl(event.target.value)} 
+						value={blog.url}
+						onChange={(event) => setBlog((prevBlog) => ({ ...prevBlog, url: event.target.value }))} 
 					/>
 				</div>
 				<input type="submit" name="create" />
+				<button onClick={() => setVisible(false)}>Cancel</button>
 			</form>
 		</>
 	);
