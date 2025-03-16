@@ -1,3 +1,5 @@
+
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import blogService from '../services/blogs';
@@ -66,4 +68,17 @@ const Blog = ({ blog, setBlogs, user }) => {
 	);
 };
 
-export default Blog
+
+Blog.propTypes = {
+	blog: PropTypes.shape({
+		title: PropTypes.string.isRequired,
+		author: PropTypes.string.isRequired,
+		url: PropTypes.string.isRequired,
+		likes: PropTypes.number.isRequired,
+		user: PropTypes.shape({
+			name: PropTypes.string.isRequired
+		}).isRequired
+	}).isRequired
+};
+
+export default Blog;
