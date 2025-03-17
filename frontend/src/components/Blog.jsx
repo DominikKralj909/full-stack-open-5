@@ -32,8 +32,9 @@ const Blog = ({ blog, setBlogs, user, onLike }) => {
 	const canDelete = user && blog.user.username === user.username;
 
 	return (
-		<div style={blogStyle}>
-			{blog.title} {blog.author}
+		<div style={blogStyle} className="blog-entry">
+			<span className="blog-title">{blog.title}</span>
+			<span className="blog-author">{blog.author}</span>
 			<button onClick={() => setVisible((prevVisible) => !prevVisible)}>
 				{visible ? 'Hide' : 'View'}
 			</button>
@@ -41,11 +42,11 @@ const Blog = ({ blog, setBlogs, user, onLike }) => {
 				<ul>
 					<li>{blog.url}</li>
 					<li>
-						{blog.likes}
-						 <button onClick={() => onLike(blog)}>Like</button>
+						 <span className="blog-likes">{blog.likes}</span>
+						 <button className="like-button" onClick={() => onLike(blog)}>Like</button>
 					</li>
 					<li>{blog.user.name}</li>
-					{canDelete && <button onClick={handleDelete}>Delete</button>}
+					{canDelete && <button onClick={handleDelete} value="Delete">Delete</button>}
 				</ul>
 			)}
 		</div>  

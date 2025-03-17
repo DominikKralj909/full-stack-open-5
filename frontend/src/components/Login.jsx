@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import blogService from '../services/blogs';
 
-function Login({ setUser }) {
+function Login({ setUser, showNotification }) {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -16,16 +16,17 @@ function Login({ setUser }) {
 			setUser(user);
 		} catch(error) {
 			console.error('Login failed:', error.response?.data?.error || error.message);
+			showNotification('Invalid credentials', 'error');
 		}
 	}
 
 	return(
-		<form onSubmit={handleLogin}>
+		<form onSubmit={handleLogin} id="login">
 			<div>
 				Username:
 				<input 
 					type="text"
-					name="Username"
+					name="username"
 					value={username}
 					onChange={(event) => setUsername(event.target.value)} 
 				/>
@@ -34,14 +35,14 @@ function Login({ setUser }) {
 				Password:
 				<input 
 					type="text"
-					name="Password"
+					name="password"
 					value={password}
 					onChange={(event) => setPassword(event.target.value)} 
 				/>
 			</div>
 			<br />
 			<div>
-				<input type="submit" name="Login" />
+				<input type="submit" name="login" value="Login" />
 			</div>
 		</form>
 	);

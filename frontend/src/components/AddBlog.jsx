@@ -27,7 +27,6 @@ function AddBlog({ setBlogs, showNotification, fetchBlogs, setVisible }) {
 		}
 	};
 
-
 	return(
 		<>
 			<h2>create new</h2>
@@ -59,7 +58,7 @@ function AddBlog({ setBlogs, showNotification, fetchBlogs, setVisible }) {
 						onChange={(event) => setBlog((prevBlog) => ({ ...prevBlog, url: event.target.value }))} 
 					/>
 				</div>
-				<input type="submit" name="create" />
+				<input type="submit" name="create" value="Create" />
 				<button onClick={() => setVisible(false)}>Cancel</button>
 			</form>
 		</>

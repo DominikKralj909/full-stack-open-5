@@ -63,17 +63,18 @@ const App = () => {
 		<div>
 			{!user ? (
 				<div>
-					<Login setUser={setUser} />
+					<Notification message={notification} />
+					<Login setUser={setUser} showNotification={showNotification} />
 				</div>
 			) : (
 				<>
 				 	<Notification message={notification} />
-					<h2>blogs</h2>
+					<h1>Blog List</h1>
 					<div>
 						<span>{user.username} logged in</span>
 						<button onClick={() => setUser(null)}>Logout</button>
 					</div>
-					<button onClick={() => setVisible(true)}>New note</button>
+					<button onClick={() => setVisible(true)}>Create new blog</button>
 					<br />
 					<Toggleable 
 						visible={visible}
