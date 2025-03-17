@@ -1,21 +1,31 @@
 module.exports = {
-	rules: {
-		indent: ["error", 4],
-		quotes: ["error", "single"],
-		semi: ["error", "always"],
-		"react/prop-types": ["error"]
-	},
-	extends: ["eslint:recommended", "plugin:react/recommended"],
 	env: {
 		browser: true,
-		es2021: true
+		es2021: true,
+		node: true,
+		'jest/globals': true,
 	},
+	extends: [
+		'eslint:recommended',
+		'plugin:react/recommended',
+		'plugin:jsx-a11y/recommended',
+		'plugin:testing-library/react',
+		'plugin:jest/recommended'
+	],
 	parserOptions: {
 		ecmaFeatures: {
-			jsx: true
+			jsx: true,
 		},
-		ecmaVersion: 12,
-		sourceType: "module"
+		ecmaVersion: 'latest',
+		sourceType: 'module',
 	},
-	plugins: ["react"]
+	plugins: ['react', 'jest', 'testing-library'], 
+	rules: {
+		indent: ['error', 4],
+		'jest/no-disabled-tests': 'warn',
+		'jest/no-focused-tests': 'error',
+		'jest/no-identical-title': 'error',
+		'jest/prefer-to-have-length': 'warn',
+		'jest/valid-expect': 'error',
+	},
 };

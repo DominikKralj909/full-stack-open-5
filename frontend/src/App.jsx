@@ -24,7 +24,6 @@ const App = () => {
 		}
 	};
 
-
 	useEffect(() => {
 		fetchBlogs();
 	}, []);
@@ -39,6 +38,22 @@ const App = () => {
 		}
     }, []);
 
+	const handleLike = async (blog) => {
+			try {
+				const updatedBlog = await blogService.updateBlog(blog.id, {
+					title: blog.title,
+					author: blog.author,
+					url: blog.url,
+					likes: blog.likes + 1,
+					user: blog.user.id
+				});
+	
+				setBlogs((prevBlogs) => [...prevBlogs.map(b => (b.id === blog.id ? updatedBlog : b))].sort((a, b) => b.likes - a.likes));
+			} catch (error) {
+				console.error('Error liking blog:', error.response?.data?.error || error.message);
+			}
+	};
+	
 	 const showNotification = (message) => {
         setNotification(message);
         setTimeout(() => setNotification(null), 3000);
@@ -72,7 +87,7 @@ const App = () => {
 						/>
 					</Toggleable>
 					<br />
-					{blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />)}
+					{blogs.map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} onLike={handleLike} />)}
 				</>
 			)}
 		</div>
